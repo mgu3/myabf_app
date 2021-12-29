@@ -37,6 +37,13 @@ class _MainPageState extends State<MainPage> {
                 ),
               ),
               const SizedBox(height: 16),
+              Align(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                  onPressed: () {},
+                  child: const Text("Delete All"),
+                ),
+              ),
               ListView.separated(
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
