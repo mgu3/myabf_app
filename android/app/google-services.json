@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "728779640468",
+    "project_id": "abf-fcm-dev",
+    "storage_bucket": "abf-fcm-dev.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:728779640468:android:8371cf7e6a1d8ff5adae81",
+        "android_client_info": {
+          "package_name": "au.com.myabf"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "728779640468-slmaqfitv4uthg4vqn647kfj87nnk003.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBj6Zc092vgXO89TDIaACNjKMF6YgUfu3w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "728779640468-slmaqfitv4uthg4vqn647kfj87nnk003.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "728779640468-13f4hngkfdi4529lvoo0gfe2qjpsmr6s.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "au.com.myabf.myabfApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
