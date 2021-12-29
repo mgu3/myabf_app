@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:myabf/utils/const.dart';
 import 'package:myabf/view/detail_page.dart';
 import 'package:myabf/widget/notification_card.dart';
 
@@ -11,6 +12,15 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  List<Color> colors = [
+    COLOR.PRIMARY,
+    COLOR.INFO,
+    COLOR.SUCCESS,
+    COLOR.DANGER,
+    COLOR.WARNING,
+    COLOR.DEFAULT
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,13 +42,17 @@ class _MainPageState extends State<MainPage> {
                   shrinkWrap: true,
                   primary: false,
                   itemBuilder: (context, index) {
-                    return NotificationCard(callback: () {
-                      Navigator.of(context).push(
-                        CupertinoPageRoute(
-                          builder: (context) => const DetailPage(),
-                        ),
-                      );
-                    });
+                    return NotificationCard(
+                      color: colors[index % colors.length],
+                      callback: () {
+                        Navigator.of(context).push(
+                          CupertinoPageRoute(
+                            builder: (context) => const DetailPage(),
+                          ),
+                        );
+                      },
+                      onDelete: () {},
+                    );
                   },
                   separatorBuilder: (context, index) =>
                       const SizedBox(height: 8),
