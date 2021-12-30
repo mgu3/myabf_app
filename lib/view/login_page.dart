@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:future_progress_dialog/future_progress_dialog.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:myabf/utils/const.dart';
+import 'package:myabf/utils/util.dart';
 import 'package:myabf/view/main_page.dart';
 import 'package:myabf/view/signup_page.dart';
 import 'package:myabf/widget/entry_field.dart';
@@ -39,7 +41,7 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 16),
                 EntryField(
                   icon: Icons.email_outlined,
-                  hint: "Email Address",
+                  hint: "Email Address or ABF Number",
                   controller: teEmail,
                 ),
                 const SizedBox(height: 16),
@@ -61,13 +63,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 16),
                 ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (context) => const MainPage(),
-                      ),
-                    );
-                  },
+                  onPressed: login,
                   child: const Text("LOG IN"),
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
@@ -111,5 +107,39 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  Future login() async {
+    FocusScope.of(context).unfocus();
+
+    String email = teEmail.text.trim();
+    String password = tePassword.text;
+
+    if (email.isEmpty) {
+      showToast("Please input your email address or ABF Number");
+      return;
+    }
+
+    if (password.isEmpty) {
+      showToast("Please input your password");
+      return;
+    }
+
+    String result = await showDialog(
+      context: context,
+      builder: (context) => FutureProgressDialog(
+        Util.login(email, password),
+      ),
+    );
+
+    if (result == "Success") {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const MainPage(),
+        ),
+      );
+    } else {
+      showToast(result);
+    }
   }
 }
