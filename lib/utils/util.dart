@@ -50,7 +50,9 @@ class Util {
       Map<String, dynamic> result = json.decode(response.body);
 
       if (result[API.STATUS] == "Success") {
-        Globals.currentUser = User.fromJson(result["user"]);
+        User user = User.fromJson(result["user"]);
+        user.token = Globals.deviceToken;
+        Globals.currentUser = user;
         await saveLocalUser();
         return "Success";
       } else {
@@ -58,6 +60,36 @@ class Util {
       }
     } catch (e) {
       print(e);
+      return "Connection Error";
+    }
+  }
+
+  static Future<String> updateDeviceToken() async {
+    if (Globals.currentUser!.token == Globals.deviceToken) {
+      return "Success";
+    }
+
+    try {
+      final http.Response response =
+          await http.post(Uri.parse(BASE_URL + API.UPDATE_TOKEN),
+              headers: <String, String>{
+                'Content-Type': 'application/json; charset=UTF-8',
+              },
+              body: jsonEncode(<String, dynamic>{
+                "old_fcm_token": Globals.currentUser!.token,
+                "new_fcm_token": Globals.deviceToken,
+              }));
+
+      Map<String, dynamic> result = json.decode(response.body);
+
+      if (result[API.STATUS] == "Success") {
+        Globals.currentUser!.token = Globals.deviceToken;
+        await saveLocalUser();
+        return "Success";
+      } else {
+        return result[API.MESSAGE] ?? "";
+      }
+    } catch (e) {
       return "Connection Error";
     }
   }

@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:myabf/utils/const.dart';
+import 'package:myabf/utils/globals.dart';
+import 'package:myabf/utils/util.dart';
 import 'package:myabf/view/detail_page.dart';
+import 'package:myabf/view/login_page.dart';
 import 'package:myabf/widget/notification_card.dart';
 
 class MainPage extends StatefulWidget {
@@ -24,6 +27,25 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        actions: [
+          IconButton(
+            onPressed: () async {
+              Globals.currentUser = null;
+              await Util.removeLocalUser();
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) {
+                    return const LoginPage();
+                  },
+                ),
+              );
+            },
+            icon: const Icon(Icons.logout_outlined),
+          )
+        ],
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16),

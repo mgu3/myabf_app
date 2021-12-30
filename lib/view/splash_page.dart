@@ -2,7 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:myabf/model/user.dart';
+import 'package:myabf/utils/globals.dart';
+import 'package:myabf/utils/util.dart';
 import 'package:myabf/view/login_page.dart';
+import 'package:myabf/view/main_page.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({Key? key}) : super(key: key);
@@ -19,11 +23,7 @@ class _SplashPageState extends State<SplashPage> {
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       Timer.periodic(const Duration(seconds: 2), (timer) {
         timer.cancel();
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => const LoginPage(),
-          ),
-        );
+        autoLogin();
       });
     });
   }
@@ -41,5 +41,25 @@ class _SplashPageState extends State<SplashPage> {
         ),
       ),
     );
+  }
+
+  void autoLogin() async {
+    User? user = await Util.getLocalUser();
+
+    if (user != null) {
+      Globals.currentUser = user;
+      await Util.updateDeviceToken();
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const MainPage(),
+        ),
+      );
+    } else {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const LoginPage(),
+        ),
+      );
+    }
   }
 }

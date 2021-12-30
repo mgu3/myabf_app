@@ -26,6 +26,7 @@ class API {
   static const String MESSAGE = "message";
 
   static const String LOGIN = "/api/cobalt/mobile-client-register/v1.0";
+  static const String UPDATE_TOKEN = "/api/cobalt/mobile-client-update/v1.0";
 }
 
 bool isNumeric(String s) {

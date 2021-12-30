@@ -2,11 +2,13 @@ class User {
   int id;
   String firstName;
   String lastName;
+  String token;
 
   User({
     required this.id,
     required this.firstName,
     required this.lastName,
+    required this.token,
   });
 
   Map<String, dynamic> toJson() {
@@ -14,6 +16,7 @@ class User {
       'system_number': id,
       'first_name': firstName,
       'last_name': lastName,
+      'token': token,
     };
   }
 
@@ -22,6 +25,7 @@ class User {
       id: map['system_number'] ?? 0,
       firstName: map['first_name'] ?? "",
       lastName: map['last_name'] ?? "",
+      token: map['token'] ?? "",
     );
   }
 
