@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:myabf/provider/home_provider.dart';
 import 'package:myabf/utils/globals.dart';
 import 'package:myabf/view/splash_page.dart';
+import 'package:provider/provider.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // If you're going to use other Firebase services in the background, such as Firestore,
@@ -66,29 +68,32 @@ class MyApp extends StatelessWidget {
     _getToken();
     _initFirebaseMessaging(context);
 
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'MYABF',
-      theme: ThemeData(
-        // primarySwatch: Colors.blue,
-        primaryColor: Colors.white,
-        appBarTheme: const AppBarTheme(
-          color: Colors.white,
-          titleTextStyle: TextStyle(
-            color: Colors.black,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
+    return MultiProvider(
+      providers: [ChangeNotifierProvider.value(value: HomeProvider())],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'MYABF',
+        theme: ThemeData(
+          // primarySwatch: Colors.blue,
+          primaryColor: Colors.white,
+          appBarTheme: const AppBarTheme(
+            color: Colors.white,
+            titleTextStyle: TextStyle(
+              color: Colors.black,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+            iconTheme: IconThemeData(color: Colors.black),
+            actionsIconTheme: IconThemeData(color: Colors.black),
           ),
-          iconTheme: IconThemeData(color: Colors.black),
-          actionsIconTheme: IconThemeData(color: Colors.black),
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+          textTheme: GoogleFonts.poppinsTextTheme(
+            Theme.of(context).textTheme,
+          ),
+          fontFamily: GoogleFonts.poppins().fontFamily,
         ),
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-        textTheme: GoogleFonts.poppinsTextTheme(
-          Theme.of(context).textTheme,
-        ),
-        fontFamily: GoogleFonts.poppins().fontFamily,
+        home: const SplashPage(),
       ),
-      home: const SplashPage(),
     );
   }
 
@@ -115,6 +120,9 @@ class MyApp extends StatelessWidget {
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       print("onMessage listen event was published!");
+
+      //refresh Main Page
+      Globals.mainStateKey.currentState?.updateState();
 
       RemoteNotification? notification = message.notification;
       AndroidNotification? android = message.notification?.android;

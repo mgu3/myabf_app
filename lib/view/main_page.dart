@@ -1,20 +1,23 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:myabf/model/notifier.dart';
+import 'package:myabf/provider/home_provider.dart';
 import 'package:myabf/utils/const.dart';
 import 'package:myabf/utils/globals.dart';
 import 'package:myabf/utils/util.dart';
 import 'package:myabf/view/detail_page.dart';
 import 'package:myabf/view/login_page.dart';
 import 'package:myabf/widget/notification_card.dart';
+import 'package:provider/provider.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
 
   @override
-  _MainPageState createState() => _MainPageState();
+  MainPageState createState() => MainPageState();
 }
 
-class _MainPageState extends State<MainPage> {
+class MainPageState extends State<MainPage> {
   List<Color> colors = [
     COLOR.PRIMARY,
     COLOR.INFO,
@@ -26,6 +29,8 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<HomeProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -59,37 +64,59 @@ class _MainPageState extends State<MainPage> {
                 ),
               ),
               const SizedBox(height: 16),
-              Align(
-                alignment: Alignment.centerRight,
-                child: TextButton(
-                  onPressed: () {},
-                  child: const Text("Delete All"),
-                ),
-              ),
-              ListView.separated(
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  primary: false,
-                  itemBuilder: (context, index) {
-                    return NotificationCard(
-                      color: colors[index % colors.length],
-                      callback: () {
-                        Navigator.of(context).push(
-                          CupertinoPageRoute(
-                            builder: (context) => const DetailPage(),
+              FutureBuilder<List<Notifier>>(
+                future: provider.getLatestNotification(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    List<Notifier> notifications = snapshot.data!;
+
+                    return Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: TextButton(
+                            onPressed: () {},
+                            child: const Text("Delete All"),
                           ),
-                        );
-                      },
-                      onDelete: () {},
+                        ),
+                        ListView.separated(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            primary: false,
+                            itemBuilder: (context, index) {
+                              return NotificationCard(
+                                notification: notifications[index],
+                                color: colors[index % colors.length],
+                                callback: () {
+                                  Navigator.of(context).push(
+                                    CupertinoPageRoute(
+                                      builder: (context) => const DetailPage(),
+                                    ),
+                                  );
+                                },
+                                onDelete: () {},
+                              );
+                            },
+                            separatorBuilder: (_, __) =>
+                                const SizedBox(height: 8),
+                            itemCount: notifications.length),
+                      ],
                     );
-                  },
-                  separatorBuilder: (context, index) =>
-                      const SizedBox(height: 8),
-                  itemCount: 20)
+                  } else if (snapshot.hasError) {
+                    return Container();
+                  } else {
+                    return const CircularProgressIndicator();
+                  }
+                },
+              ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  void updateState() {
+    setState(() {});
   }
 }

@@ -51,7 +51,7 @@ class _SplashPageState extends State<SplashPage> {
       await Util.updateDeviceToken();
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => const MainPage(),
+          builder: (context) => MainPage(key: Globals.mainStateKey),
         ),
       );
     } else {

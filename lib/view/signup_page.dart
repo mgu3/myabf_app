@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:myabf/utils/const.dart';
+import 'package:myabf/utils/globals.dart';
 import 'package:myabf/view/login_page.dart';
 import 'package:myabf/view/main_page.dart';
 import 'package:myabf/widget/entry_field.dart';
@@ -62,7 +63,8 @@ class _SignupPageState extends State<SignupPage> {
                   onPressed: () {
                     Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
-                        builder: (context) => const MainPage(),
+                        builder: (context) =>
+                            MainPage(key: Globals.mainStateKey),
                       ),
                     );
                   },

@@ -1,14 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:myabf/model/notifier.dart';
 
 class NotificationCard extends StatelessWidget {
   const NotificationCard(
       {Key? key,
+      required this.notification,
       required this.color,
       required this.callback,
       required this.onDelete})
       : super(key: key);
 
+  final Notifier notification;
   final Color color;
   final VoidCallback callback, onDelete;
 
@@ -48,11 +51,12 @@ class NotificationCard extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 8),
-                    const Text(
-                      "Gold Coast Open Teams Round 5",
-                      style: TextStyle(
+                    Text(
+                      notification.message,
+                      style: const TextStyle(
                         color: Colors.white,
                       ),
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),

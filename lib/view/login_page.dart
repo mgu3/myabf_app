@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:future_progress_dialog/future_progress_dialog.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:myabf/utils/const.dart';
+import 'package:myabf/utils/globals.dart';
 import 'package:myabf/utils/util.dart';
 import 'package:myabf/view/main_page.dart';
 import 'package:myabf/view/signup_page.dart';
@@ -135,7 +136,7 @@ class _LoginPageState extends State<LoginPage> {
     if (result == "Success") {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => const MainPage(),
+          builder: (context) => MainPage(key: Globals.mainStateKey),
         ),
       );
     } else {
