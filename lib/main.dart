@@ -144,6 +144,7 @@ class MyApp extends StatelessWidget {
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       print('A new onMessageOpenedApp event was published!');
+      Globals.mainStateKey.currentState?.updateState();
     });
 
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
