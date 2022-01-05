@@ -93,4 +93,51 @@ class Util {
       return "Connection Error";
     }
   }
+
+  static Future<String> deleteMessage(int id) async {
+    try {
+      final http.Response response =
+          await http.post(Uri.parse(BASE_URL + API.DELETE_MESSAGE),
+              headers: <String, String>{
+                'Content-Type': 'application/json; charset=UTF-8',
+              },
+              body: jsonEncode(<String, dynamic>{
+                "fcm_token": Globals.deviceToken,
+                "message_id": id,
+              }));
+
+      Map<String, dynamic> result = json.decode(response.body);
+
+      if (result[API.STATUS] == "Success") {
+        return "Success";
+      } else {
+        return result[API.MESSAGE] ?? "";
+      }
+    } catch (e) {
+      return "Connection Error";
+    }
+  }
+
+  static Future<String> deleteAll() async {
+    try {
+      final http.Response response =
+          await http.post(Uri.parse(BASE_URL + API.DELETE_MESSAGE),
+              headers: <String, String>{
+                'Content-Type': 'application/json; charset=UTF-8',
+              },
+              body: jsonEncode(<String, dynamic>{
+                "fcm_token": Globals.deviceToken,
+              }));
+
+      Map<String, dynamic> result = json.decode(response.body);
+
+      if (result[API.STATUS] == "Success") {
+        return "Success";
+      } else {
+        return result[API.MESSAGE] ?? "";
+      }
+    } catch (e) {
+      return "Connection Error";
+    }
+  }
 }

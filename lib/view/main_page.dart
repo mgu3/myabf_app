@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:future_progress_dialog/future_progress_dialog.dart';
 import 'package:myabf/model/notifier.dart';
 import 'package:myabf/provider/home_provider.dart';
 import 'package:myabf/utils/const.dart';
@@ -75,7 +76,7 @@ class MainPageState extends State<MainPage> {
                         Align(
                           alignment: Alignment.centerRight,
                           child: TextButton(
-                            onPressed: () {},
+                            onPressed: deleteAllMessage,
                             child: const Text("Delete All"),
                           ),
                         ),
@@ -84,17 +85,23 @@ class MainPageState extends State<MainPage> {
                             shrinkWrap: true,
                             primary: false,
                             itemBuilder: (context, index) {
+                              Notifier notification = notifications[index];
+                              Color color = colors[index % colors.length];
+
                               return NotificationCard(
-                                notification: notifications[index],
-                                color: colors[index % colors.length],
+                                notification: notification,
+                                color: color,
                                 callback: () {
                                   Navigator.of(context).push(
                                     CupertinoPageRoute(
-                                      builder: (context) => const DetailPage(),
+                                      builder: (context) => DetailPage(
+                                        notification: notification,
+                                        color: color,
+                                      ),
                                     ),
                                   );
                                 },
-                                onDelete: () {},
+                                onDelete: () => deleteMessage(notification.id),
                               );
                             },
                             separatorBuilder: (_, __) =>
@@ -118,5 +125,35 @@ class MainPageState extends State<MainPage> {
 
   void updateState() {
     setState(() {});
+  }
+
+  Future<void> deleteMessage(int id) async {
+    String result = await showDialog(
+      context: context,
+      builder: (context) => FutureProgressDialog(
+        Util.deleteMessage(id),
+      ),
+    );
+
+    if (result == "Success") {
+      updateState();
+    } else {
+      showToast(result);
+    }
+  }
+
+  Future<void> deleteAllMessage() async {
+    String result = await showDialog(
+      context: context,
+      builder: (context) => FutureProgressDialog(
+        Util.deleteAll(),
+      ),
+    );
+
+    if (result == "Success") {
+      updateState();
+    } else {
+      showToast(result);
+    }
   }
 }

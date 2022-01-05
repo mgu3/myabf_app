@@ -29,6 +29,8 @@ class API {
   static const String UPDATE_TOKEN = "/api/cobalt/mobile-client-update/v1.0";
   static const String UNREAD_MESSAGES = "/api/cobalt/mobile-client-get-unread-messages/v1.0";
   static const String LATEST_MESSAGES = "/api/cobalt/mobile-client-get-latest-messages/v1.0";
+  static const String DELETE_MESSAGE = "/api/cobalt/mobile-client-delete-message/v1.0";
+  static const String DELETE_ALL = "/api/cobalt/mobile-client-delete-all-messages/v1.0";
 }
 
 bool isNumeric(String s) {
