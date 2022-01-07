@@ -57,6 +57,7 @@ class NotificationCard extends StatelessWidget {
                         color: Colors.white,
                       ),
                       overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
                     ),
                   ],
                 ),

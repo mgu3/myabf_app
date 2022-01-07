@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:future_progress_dialog/future_progress_dialog.dart';
 import 'package:myabf/model/notifier.dart';
 import 'package:myabf/provider/home_provider.dart';
@@ -88,13 +89,30 @@ class MainPageState extends State<MainPage> with WidgetsBindingObserver {
           padding: const EdgeInsets.all(16),
           child: Column(
             children: [
-              AspectRatio(
-                aspectRatio: 3.6,
-                child: Image.asset(
-                  "images/logo.png",
-                  fit: BoxFit.contain,
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    "images/logo.png",
+                    // fit: BoxFit.contain,
+                    width: MediaQuery.of(context).size.width * .3,
+                  ),
+                  Text(
+                    "Hi " + Globals.currentUser!.firstName,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
               ),
+              // AspectRatio(
+              //   aspectRatio: 3.6,
+              //   child: Image.asset(
+              //     "images/logo.png",
+              //     fit: BoxFit.contain,
+              //   ),
+              // ),
               const SizedBox(height: 16),
               FutureBuilder<List<Notifier>>(
                 future: provider.getLatestNotification(),

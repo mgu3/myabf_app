@@ -121,7 +121,7 @@ class Util {
   static Future<String> deleteAll() async {
     try {
       final http.Response response =
-          await http.post(Uri.parse(BASE_URL + API.DELETE_MESSAGE),
+          await http.post(Uri.parse(BASE_URL + API.DELETE_ALL),
               headers: <String, String>{
                 'Content-Type': 'application/json; charset=UTF-8',
               },

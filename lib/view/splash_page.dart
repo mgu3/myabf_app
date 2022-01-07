@@ -21,10 +21,10 @@ class _SplashPageState extends State<SplashPage> {
     super.initState();
 
     WidgetsBinding.instance?.addPostFrameCallback((_) {
-      Timer.periodic(const Duration(seconds: 2), (timer) {
-        timer.cancel();
+      // Timer.periodic(const Duration(seconds: 2), (timer) {
+      //   timer.cancel();
         autoLogin();
-      });
+      // });
     });
   }
 
