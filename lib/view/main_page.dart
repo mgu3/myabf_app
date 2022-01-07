@@ -85,87 +85,94 @@ class MainPageState extends State<MainPage> with WidgetsBindingObserver {
         ],
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    "images/logo.png",
-                    // fit: BoxFit.contain,
-                    width: MediaQuery.of(context).size.width * .3,
-                  ),
-                  Text(
-                    "Hi " + Globals.currentUser!.firstName,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+        child: RefreshIndicator(
+          onRefresh: () async {
+            updateState();
+          },
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      "images/logo.png",
+                      // fit: BoxFit.contain,
+                      width: MediaQuery.of(context).size.width * .3,
                     ),
-                  ),
-                ],
-              ),
-              // AspectRatio(
-              //   aspectRatio: 3.6,
-              //   child: Image.asset(
-              //     "images/logo.png",
-              //     fit: BoxFit.contain,
-              //   ),
-              // ),
-              const SizedBox(height: 16),
-              FutureBuilder<List<Notifier>>(
-                future: provider.getLatestNotification(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    List<Notifier> notifications = snapshot.data!;
+                    Text(
+                      "Hi " + Globals.currentUser!.firstName,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                // AspectRatio(
+                //   aspectRatio: 3.6,
+                //   child: Image.asset(
+                //     "images/logo.png",
+                //     fit: BoxFit.contain,
+                //   ),
+                // ),
+                const SizedBox(height: 16),
+                FutureBuilder<List<Notifier>>(
+                  future: provider.getLatestNotification(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      List<Notifier> notifications = snapshot.data!;
 
-                    return Column(
-                      children: [
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: TextButton(
-                            onPressed: deleteAllMessage,
-                            child: const Text("Delete All"),
+                      return Column(
+                        children: [
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: TextButton(
+                              onPressed: deleteAllMessage,
+                              child: const Text("Delete All"),
+                            ),
                           ),
-                        ),
-                        ListView.separated(
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            primary: false,
-                            itemBuilder: (context, index) {
-                              Notifier notification = notifications[index];
-                              Color color = colors[index % colors.length];
+                          ListView.separated(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              primary: false,
+                              itemBuilder: (context, index) {
+                                Notifier notification = notifications[index];
+                                Color color = colors[index % colors.length];
 
-                              return NotificationCard(
-                                notification: notification,
-                                color: color,
-                                callback: () {
-                                  Navigator.of(context).push(
-                                    CupertinoPageRoute(
-                                      builder: (context) => DetailPage(
-                                        notification: notification,
-                                        color: color,
+                                return NotificationCard(
+                                  notification: notification,
+                                  color: color,
+                                  callback: () {
+                                    Navigator.of(context).push(
+                                      CupertinoPageRoute(
+                                        builder: (context) => DetailPage(
+                                          notification: notification,
+                                          color: color,
+                                        ),
                                       ),
-                                    ),
-                                  );
-                                },
-                                onDelete: () => deleteMessage(notification.id),
-                              );
-                            },
-                            separatorBuilder: (_, __) =>
-                                const SizedBox(height: 8),
-                            itemCount: notifications.length),
-                      ],
-                    );
-                  } else if (snapshot.hasError) {
-                    return Container();
-                  } else {
-                    return const CircularProgressIndicator();
-                  }
-                },
-              ),
-            ],
+                                    );
+                                  },
+                                  onDelete: () =>
+                                      deleteMessage(notification.id),
+                                );
+                              },
+                              separatorBuilder: (_, __) =>
+                                  const SizedBox(height: 8),
+                              itemCount: notifications.length),
+                        ],
+                      );
+                    } else if (snapshot.hasError) {
+                      return Container();
+                    } else {
+                      return const CircularProgressIndicator();
+                    }
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),
